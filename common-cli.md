@@ -14,7 +14,7 @@ Use this CLI on local computer to initilize global configuration of GCP on the l
 1. Login with Google account
 2. Connect to a Cloud project
 
-## Auth 
+## Auth/Login
 
 ```gcloud auth list```
 
@@ -38,7 +38,28 @@ Connect current GCP-Environment to project ```hello-world-project``` .
 
 ## Create VM
 
+```gcloud compute instances create example-vm --zone us-central1-c```
+
+```
+
+You can set the default region and zones that gcloud uses if you are always working within one region/zone and you don't want to append the --zone flag every time. Do this by running these commands :
+
+gcloud config set compute/zone ...
+
+gcloud config set compute/region ...
+
+```
+
 ## SSH into VM
+
+```gcloud compute ssh example-vm --zone us-central1-c```
+
+### SSH into VM and install a webserver
+
+- ```sudo su -```
+- ```apt-get update```
+- ```apt-get install nginx -y```
+- ```ps auwx | grep nginx```  -> For test, you can use external URL to visit the webserver.
 
 ## Create disk
 

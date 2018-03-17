@@ -5,7 +5,32 @@ List useful CLIs when work with Google Cloud Platform(GCP) commonly.
 
 ## Ready
 
-### Local computer init
+### gcloud
+
+```gcloud -h``` -> simple help
+
+```gcloud config --help``` or ```gcloud help config``` ->  long, detailed help
+ 
+```cd $HOME``` -> Change your current working directory.
+
+### gsutil
+
+```gsutil mb gs:/my-very-unique-bk-name``` -> Make a bucket, the name must be unique global(really, distinct to the others in the whole world).
+
+```gsutil rb gs:/my-very-unique-bk-nam``` -> Remove a bucket.
+
+```gsutil cp test-file.dat gs://my-very-unique-bk-name``` -> Copy one file to the bucket.
+
+```gsutil --help``` -> Help, get help to other flags and options.
+
+### Environment
+
+```gcloud config list```
+
+```gcloud config list --all```
+
+Get configuration of current environment, use ```--all``` for all properties.
+
 
 ```gcloud init```
 

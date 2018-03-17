@@ -3,6 +3,7 @@ Introduce
 
 List some common CLIs when work with Google Cloud Platform(GCP). Sometimes we can copy command directly instead Tab-Complete(You might know the problems).
 
+# Ready
 
 ### Local computer init
 
@@ -18,6 +19,8 @@ Use this CLI on local computer to initilize global configuration of GCP on the l
 ```gcloud auth list```
 
 List current auth-user and you'll see login email etc.
+
+# Project
 
 ### Show project
 

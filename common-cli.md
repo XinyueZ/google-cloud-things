@@ -1,11 +1,11 @@
 Introduce
 ==== 
 
-List some common CLIs when work with Google Cloud Platform(GCP). Sometimes we can copy command directly instead Tab-Complete(You might know the problems).
+List useful CLIs when work with Google Cloud Platform(GCP) commonly. 
 
-# Ready
+## Ready
 
-## Local computer init
+### Local computer init
 
 ```gcloud init```
 
@@ -14,29 +14,29 @@ Use this CLI on local computer to initilize global configuration of GCP on the l
 1. Login with Google account
 2. Connect to a Cloud project
 
-## Auth/Login
+### Auth/Login
 
 ```gcloud auth list```
 
 List current auth-user and you'll see login email etc.
 
-# Project
+## Project
 
-## Show project
+### Show project
 
 ```gcloud config list project```
 
 List current connected project.
 
-## Set/connect project
+### Set/connect project
 
 ```gcloud config set project hello-world-project```
 
 Connect current GCP-Environment to project ```hello-world-project``` .
 
-# Virtual Computer
+## Virtual Computer
 
-## Create VM
+### Create VM
 
 ```gcloud compute instances create example-vm --zone us-central1-c```
 
@@ -50,28 +50,28 @@ gcloud config set compute/region ...
 
 ```
 
-## SSH into VM
+### SSH into VM
 
 ```gcloud compute ssh example-vm --zone us-central1-c```
 
-### SSH into VM and install a webserver
+#### SSH into VM and install a webserver
 
 - ```sudo su -```
 - ```apt-get update```
 - ```apt-get install nginx -y```
 - ```ps auwx | grep nginx```  -> For test, you can use external URL to visit the webserver.
 
-## Create disk
+### Create disk
 
-## Attach disk
+### Attach disk
 
-## Find disk
+### Find disk
 
-## Format disk
+### Format disk
 
-## Mount disk
+### Mount disk
 
-## Mount disk(after VM restart)
+### Mount disk(after VM restart)
 
 
  

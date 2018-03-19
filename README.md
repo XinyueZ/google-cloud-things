@@ -74,6 +74,9 @@ gcloud config set compute/zone ...
 gcloud config set compute/region ...
 
 ```
+### List VMs instances
+
+```gcloud compute instances list```
 
 ### SSH into VM
 

@@ -20,7 +20,9 @@ List useful CLIs when work with Google Cloud Platform(GCP) commonly.
 ```gsutil mb -l EU gs://$DEVSHELL_PROJECT_ID``` -> In Cloud Shell, make a bucket for EU region and use name with environement variable, the $DEVSHELL_PROJECT_ID.
 
 > Use linux command, you will know what it is.
-```echo $DEVSHELL_PROJECT_ID.```
+```echo $DEVSHELL_PROJECT_ID```
+
+```gsutil defacl ch -u AllUsers:R gs://$DEVSHELL_PROJECT_ID``` -> Grant ACL for "R" (read for all users)
 
 ```gsutil rb gs:/my-very-unique-bk-nam``` -> Remove a bucket.
 

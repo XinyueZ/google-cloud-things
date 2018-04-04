@@ -164,6 +164,8 @@ If you want a different device name, when you attach the disk, you would specify
 
 #### Make startup.sh for VM-Template
 
+It is just a normal batch shell-script not specialized to VM.
+
 ```
 apt-get update
 apt-get install -y nginx

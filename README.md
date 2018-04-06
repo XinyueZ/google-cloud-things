@@ -178,3 +178,18 @@ sed -i -- 's/nginx/Google Cloud Platform - '"\$HOSTNAME"'/' /var/www/html/index.
 ```
 gcloud compute instance-templates create nginx-template --metadata-from-file startup-script=startup.sh
 ```
+
+
+## Examples and practice
+
+#### GCP container engine and kubernetes
+#### GCP compute engine 
+
+
+## Work with routes and firewall rules
+
+Google Cloud Platform (GCP) Virtual Private Cloud (VPC) networks have an internal DNS service that allows you to use instance names instead of instance IP addresses to refer to Compute Engine virtual machine (VM) instances.
+
+Each instance has a metadata server that also acts as a DNS resolver for that instance. DNS lookups are performed for instance names. The metadata server itself stores all DNS information for the local network and queries Google's public DNS servers for any addresses outside of the local network.
+
+An instance is not aware of any external IP address assigned to it. Instead, the network stores a lookup table that matches external IP addresses with the internal IP addresses of the relevant instances.

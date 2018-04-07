@@ -162,6 +162,12 @@ If you want a different device name, when you attach the disk, you would specify
 
 ### Create VM-Template
 
+Notice that you can't change the machine type, the CPU platform, or the zone.
+
+You can add network tags and allow specific network traffic from the internet through firewalls.
+
+Some properties of a VM are integral to the VM, are established when the VM is created, and cannot be changed. Other properties can be edited. You can add additional disks and you can also determine whether the boot disk is deleted when the instance is deleted. Normally the boot disk defaults to being deleted automatically when the instance is deleted. But sometimes you will want to override this behavior. This feature is very important because you cannot create an image from a boot disk when it is attached to a running instance. So you would need to disable Delete boot disk when instance is deleted to enable creating a system image from the boot disk.
+
 #### Make startup.sh for VM-Template
 
 It is just a normal batch shell-script not specialized to VM.
@@ -193,3 +199,11 @@ Google Cloud Platform (GCP) Virtual Private Cloud (VPC) networks have an interna
 Each instance has a metadata server that also acts as a DNS resolver for that instance. DNS lookups are performed for instance names. The metadata server itself stores all DNS information for the local network and queries Google's public DNS servers for any addresses outside of the local network.
 
 An instance is not aware of any external IP address assigned to it. Instead, the network stores a lookup table that matches external IP addresses with the internal IP addresses of the relevant instances.
+
+## SSH of VM
+
+When you connect via SSH to an instance from your browser, you need to allow SSH from Cloud Platform resources, so you must allow connections from either any IP address or from Google's IP address range, which you can get from Public SPF records. If you want to restrict SSH access to just your IP address, you need to SSH from a terminal session.
+
+When instances do not have external IP addresses, they can only be reached by other instances on the network or via a managed VPN gateway.
+
+In this case, the bastion VM serves as a management and maintenance interface to the webserver VM.

@@ -70,22 +70,77 @@ Connect current GCP-Environment to project ```hello-world-project``` .
 
 ### Create VM
 
-```gcloud compute instances create ExampleVm --zone us-central1-c```
+```
+Create single VM.
 
+gcloud compute instances create ExampleVm --zone us-central1-c
 ```
 
+
+```
+Create a few Nginx instances using a Bitnami Nginx Stack image, which includes a complete PHP, MySQL and Nginx development environment.
+
+for i in {1..3}; \
+do \
+  gcloud compute instances create "nginxstack-$i" \
+  --machine-type "f1-micro" \
+  --tags nginxstack-tcp-443,nginxstack-tcp-80 \
+  --zone us-central1-f \
+  --image   "https://www.googleapis.com/compute/v1/projects/bitnami-launchpad/global/images/bitnami-nginxstack-1-10-2-0-linux-debian-8-x86-64" \
+  --boot-disk-size "200" --boot-disk-type "pd-standard" \
+  --boot-disk-device-name "nginxstack-$i"; \
+done
+
+create a firewall rule to allow external traffic to the instances:
+
+gcloud compute firewall-rules create nginx-firewall \
+ --allow tcp:80,tcp:443 \
+ --target-tags nginxstack-tcp-80,nginxstack-tcp-443
+```
+
+> Notice that you can't change the machine type, the CPU platform, or the zone. You can add network tags and allow specific network traffic from the internet through firewalls.Some properties of a VM are integral to the VM are established when the VM is created, and cannot be changed. Other properties can be edited. You can add additional disks and you can also determine whether the boot disk is deleted when the instance is deleted. Normally the boot disk defaults to being deleted automatically when the instance is deleted. But sometimes you will want to override this behavior. This feature is very important because you cannot create an image from a boot disk when it is attached to a running instance. So you would need to disable Delete boot disk when instance is deleted to enable creating a system image from the boot disk. 
+    
+> When you connect via SSH to an instance from your browser, you need to allow SSH from Cloud Platform resources, so you must allow connections from either any IP address or from Google's IP address range, which you can get from Public SPF records. If you want to restrict SSH access to just your IP address, you need to SSH from a terminal session. When instances do not have external IP addresses, they can only be reached by other instances on the network or via a managed VPN gateway. In this case, the bastion VM serves as a management and maintenance interface to the webserver VM.
+
+### Create VM with template
+
+#### Make startup.sh for VM-Template
+
+It is just a normal batch shell-script not specialized to VM.
+
+```
+# This script is for install nginx webserver.
+apt-get update
+apt-get install -y nginx
+service nginx start
+sed -i -- 's/nginx/Google Cloud Platform - '"\$HOSTNAME"'/' /var/www/html/index.nginx-debian.html
+```
+
+#### Create VM-Template
+
+```
+gcloud compute instance-templates create nginx-template --metadata-from-file startup-script=startup.sh
+```
+
+
+
+### Make a target-pool for holding VMs (target-pools)
+
+
+```
 You can set the default region and zones that gcloud uses if you are always working within one region/zone and you don't want to append the --zone flag every time. Do this by running these commands :
 
 gcloud config set compute/zone ...
-
 gcloud config set compute/region ...
 
 For example:
-
 gcloud config set compute/zone us-central1-a
 gcloud config set compute/region us-central1
-
 ```
+
+
+
+
 ### List VMs instances
 
 ```gcloud compute instances list```
@@ -160,31 +215,6 @@ If you want a different device name, when you attach the disk, you would specify
 - Append this ```/dev/disk/by-id/scsi-0Google_PersistentDisk_persistent-disk-1 /mnt/mydisk ext4 defaults 1 1```
 
 
-### Create VM-Template
-
-Notice that you can't change the machine type, the CPU platform, or the zone.
-
-You can add network tags and allow specific network traffic from the internet through firewalls.
-
-Some properties of a VM are integral to the VM, are established when the VM is created, and cannot be changed. Other properties can be edited. You can add additional disks and you can also determine whether the boot disk is deleted when the instance is deleted. Normally the boot disk defaults to being deleted automatically when the instance is deleted. But sometimes you will want to override this behavior. This feature is very important because you cannot create an image from a boot disk when it is attached to a running instance. So you would need to disable Delete boot disk when instance is deleted to enable creating a system image from the boot disk.
-
-#### Make startup.sh for VM-Template
-
-It is just a normal batch shell-script not specialized to VM.
-
-```
-apt-get update
-apt-get install -y nginx
-service nginx start
-sed -i -- 's/nginx/Google Cloud Platform - '"\$HOSTNAME"'/' /var/www/html/index.nginx-debian.html
-```
-
-### Make VM-Template
-
-```
-gcloud compute instance-templates create nginx-template --metadata-from-file startup-script=startup.sh
-```
-
 
 ## Examples and practice
 
@@ -199,11 +229,5 @@ Google Cloud Platform (GCP) Virtual Private Cloud (VPC) networks have an interna
 Each instance has a metadata server that also acts as a DNS resolver for that instance. DNS lookups are performed for instance names. The metadata server itself stores all DNS information for the local network and queries Google's public DNS servers for any addresses outside of the local network.
 
 An instance is not aware of any external IP address assigned to it. Instead, the network stores a lookup table that matches external IP addresses with the internal IP addresses of the relevant instances.
+ 
 
-## SSH of VM
-
-When you connect via SSH to an instance from your browser, you need to allow SSH from Cloud Platform resources, so you must allow connections from either any IP address or from Google's IP address range, which you can get from Public SPF records. If you want to restrict SSH access to just your IP address, you need to SSH from a terminal session.
-
-When instances do not have external IP addresses, they can only be reached by other instances on the network or via a managed VPN gateway.
-
-In this case, the bastion VM serves as a management and maintenance interface to the webserver VM.

@@ -126,6 +126,19 @@ gcloud compute instance-templates create nginx-template --metadata-from-file sta
 
 ### Make a target-pool for holding VMs (target-pools)
 
+#### A pool
+
+```gcloud compute target-pools create nginx-pool```
+
+#### 2 instances in pool
+
+```gcloud compute instance-groups managed create nginx-group --base-instance-name nginx --size 2 --template```
+
+```gcloud compute instances list```
+
+#### Set named-ports
+
+```gcloud compute instance-groups managed set-named-ports nginx-group --named-ports http:80```
 
 ```
 You can set the default region and zones that gcloud uses if you are always working within one region/zone and you don't want to append the --zone flag every time. Do this by running these commands :
@@ -216,18 +229,43 @@ If you want a different device name, when you attach the disk, you would specify
 
 
 
+## Work with routes, firewall rules
+
+### Create firewall
+
+```gcloud compute firewall-rules create www-firewall --allow tcp:80```
+
+### Create forwarding-rules
+
+```gcloud compute forwarding-rules create nginx-lb --region us-central1 --ports=80 --target-pool nginx-pool```
+
+```gcloud compute forwarding-rules list```
+
+### Create the health-checks
+
+```gcloud compute http-health-checks create http-basic-check```
+
+> Google Cloud Platform (GCP) Virtual Private Cloud (VPC) networks have an internal DNS service that allows you to use instance names instead of instance IP addresses to refer to Compute Engine virtual machine (VM) instances. Each instance has a metadata server that also acts as a DNS resolver for that instance. DNS lookups are performed for instance names. The metadata server itself stores all DNS information for the local network and queries Google's public DNS servers for any addresses outside of the local network. An instance is not aware of any external IP address assigned to it. Instead, the network stores a lookup table that matches external IP addresses with the internal IP addresses of the relevant instances.
+
+### Backend
+
+```gcloud compute backend-services create nginx-backend --protocol HTTP --http-health-checks http-basic-check --global```
+
+```gcloud compute backend-services add-backend nginx-backend --instance-group nginx-group --instance-group-zone us-central1-a --global```
+
+```gcloud compute url-maps create web-map --default-service nginx-backend```
+
+```gcloud compute target-http-proxies create http-lb-proxy --url-map web-map```
+
+```gcloud compute forwarding-rules create http-content-rule --global --target-http-proxy http-lb-proxy --ports 80```
+
+```gcloud compute forwarding-rules list```
+
+
 ## Examples and practice
 
 #### GCP container engine and kubernetes
 #### GCP compute engine 
 
-
-## Work with routes and firewall rules
-
-Google Cloud Platform (GCP) Virtual Private Cloud (VPC) networks have an internal DNS service that allows you to use instance names instead of instance IP addresses to refer to Compute Engine virtual machine (VM) instances.
-
-Each instance has a metadata server that also acts as a DNS resolver for that instance. DNS lookups are performed for instance names. The metadata server itself stores all DNS information for the local network and queries Google's public DNS servers for any addresses outside of the local network.
-
-An instance is not aware of any external IP address assigned to it. Instead, the network stores a lookup table that matches external IP addresses with the internal IP addresses of the relevant instances.
  
 

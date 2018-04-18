@@ -76,6 +76,11 @@ Create single VM.
 gcloud compute instances create ExampleVm --zone us-central1-c
 ```
 
+```
+gcloud compute instances create webserver4 --image-family debian-9 --image-project
+ debian-cloud --tags int-lb --zone $MY_ZONE2 --subnet default --metadata startup-script-url="gs://cloud-training/archinfra/mystartupscri
+pt",my-server-id="WebServer-4"
+```
 
 ```
 Create a few Nginx instances using a Bitnami Nginx Stack image, which includes a complete PHP, MySQL and Nginx development environment.

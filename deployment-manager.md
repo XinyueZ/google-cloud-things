@@ -97,7 +97,7 @@ resources:
             
 ## Deployment
 
-> Create appserver environments for four organizations.
+> Create appserver environments for different organizations.
 
 ```
 gcloud deployment-manager deployments create appserver --config appserver.yaml

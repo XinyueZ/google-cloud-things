@@ -1,11 +1,25 @@
 Premade deployment-manager scripts
 ===
 
-chmod +x proto2json
+# Prepare
+
+> Use [proto2json](https://github.com/XinyueZ/google-cloud-things/blob/master/proto2json) to convert official Google document descritpion of REST resource to YAML format.
+
 
 Use https://www.json2yaml.com/ to see YAML of resource we want.
 
-> Use proto2json to convert official Google document descritpion of REST resource to YAML format.
+```
+
+Open browser for https://cloud.google.com/compute/docs/reference/rest/v1/instances, 
+
+Copy "json like", the JSON representation, to official_description.txt
+
+run: chmod +x proto2json
+
+run: proto2json official_description.txt
+
+```
+
 
 # An appserver 
 

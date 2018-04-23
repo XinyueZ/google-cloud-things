@@ -274,3 +274,6 @@ If you want a different device name, when you attach the disk, you would specify
 
  
 
+## Deployment manager
+
+See: https://github.com/XinyueZ/google-cloud-things/blob/master/deployment-manager.md
